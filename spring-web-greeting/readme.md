@@ -8,8 +8,8 @@ Spring Boot eases to test components with ***MockMvc***. *`GreetingControllerTes
 
 ### Testing Controllers With Default User
 
-When testing with [http://localhost:8080/greeting](http://localhost:8080/greeting) url in the  [*GreetingControllerTest#greetWithDefaultUser()*](greetWithDefaultUser.md) method, the application greets with default user which is set as "Spring Booter" in the *`GreetingController`* class.
+When testing with http://localhost:8080/greeting url in the  [*GreetingControllerTest#greetWithDefaultUser()*](greetWithDefaultUser.md) method, the application greets with default user which is set as "Spring Booter" in the *`GreetingController`* class.
 
 ### Testing Controllers With Custom User
 
-When testing with [*GreetingControllerTest#greetWithCustomUser()*](src/test/java/com/ca/samples/springwebsecure/WebSecurityConfigWebMvcTest.java) method, the application greets with custom user which is set as request param within test method by building [http://localhost:8080/greeting?name=Ceyhun](http://localhost:8080/greeting?name=Ceyhun) url.
+When testing with [*GreetingControllerTest#greetWithCustomUser()*](greetWithCustomUser.md) method, the application greets with custom user which is set as request param within test method by building http://localhost:8080/greeting?name=Ceyhun url.
