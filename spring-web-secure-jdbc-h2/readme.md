@@ -49,14 +49,14 @@ Note that, since we use H2 in memory db, we need to create and populate the db o
 ### First alternative for using jdbc authentication
 
 When `JdbcUserDetailsManager` is used, `schema.sql` and `data.sql` should also be included
-in resources folder in order to create users and authorities tables and populate the db. 
+in resources folder in order to create users and authorities tables and populate the db.
 
 ```java
 @Bean
 public JdbcUserDetailsManager jdbcUserDetailsManager(DataSource dataSource) {
   JdbcUserDetailsManager detailsManager=new JdbcUserDetailsManager();
     detailsManager.setDataSource(dataSource);
-  return detailsManager; 
+  return detailsManager;
 }
 ```
 
@@ -73,6 +73,7 @@ protected void configure(AuthenticationManagerBuilder auth) throws Exception {
       .dataSource(datasource);
 }
 ```
+
 On the other hand, as variant of `AuthenticationManagerBuilder`, we can also use the code below.
 
 ```java
@@ -83,8 +84,8 @@ protected void configure(AuthenticationManagerBuilder auth) throws Exception {
             .jdbcAuthentication()
                 .dataSource(datasource)
                 .withDefaultSchema()
-                .withUser(users.username("user").password("user").roles("USER"))
-                .withUser(users.username("ceyhun").password("ceyhun").roles("USER", "ADMIN"));
+                .withUser(users.username("user").password("{noop}user").roles("USER"))
+                .withUser(users.username("ceyhun").password("{noop}ceyhun").roles("USER", "ADMIN"));
 }
 ```
 
