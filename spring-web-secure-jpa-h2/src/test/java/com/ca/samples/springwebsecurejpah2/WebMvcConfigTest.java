@@ -29,7 +29,7 @@ public class WebMvcConfigTest {
 
 	@Test
 	@WithAnonymousUser
-	public void whenGetRootPathWithInvalidUser_thenRedirected() throws Exception {
+	public void whenGetRootPathWithInvalidUser_thenUnauthorized() throws Exception {
 		mvc
 			.perform(get("/"))
 			.andExpect(status().isUnauthorized());
