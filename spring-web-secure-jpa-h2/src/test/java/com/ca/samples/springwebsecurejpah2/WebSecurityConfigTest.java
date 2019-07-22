@@ -9,9 +9,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +21,6 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 /*
@@ -31,38 +28,18 @@ import org.springframework.web.context.WebApplicationContext;
 */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@Transactional
 public class WebSecurityConfigTest {
 
     @Autowired
     private WebApplicationContext context;
 
-    // @Autowired
-    // private static UserRepository userRepository;
-
     private MockMvc mvc;
-
-    // @BeforeClass
-    // public static void setupForAll() {
-
-    //     // Add users to db for testing
-    //     userRepository.save(new User("user", "{noop}password"));
-    //     userRepository.save(new User("ceyhun", "{noop}ceyhun"));
-
-    // }
 
     @Before
     public void setup() {
         mvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
 
     }
-
-    // @AfterClass
-    // public static void destroyForAll() {
-    //     // Delete test users from db
-    //     userRepository.delete(userRepository.findByUsername("user"));
-    //     userRepository.delete(userRepository.findByUsername("ceyhun"));
-    // }
 
     @Test
     @WithMockUser
