@@ -48,13 +48,43 @@ CREATE TABLE IF NOT EXISTS `user` (
 For the purpose of testing, we inserted two users namely `user` and `ceyhun` in to the user table with below code.
 
 ```mysql
-insert into user (id,username, password) values (null,'user', '{noop}user');
+insert into user (id,username, password) values (null,'user', '{noop}password');
 insert into user (id,username, password) values (null,'ceyhun', '{noop}ceyhun');
 ```
 
 Note that passwords are prefixed with `{noop}` phrase meaning that passwords are in plain text mode.
 
-## Testing 
+## Configuring Custom UserDetailsService
+
+In order to create **`CustomUserDetailsService`**, we implemented `UserDetailsService` interface which has one method named `loadUserByUsername()` to be customized as below for process of finding the user.
+
+```java
+@Override
+public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    User user=userRepository.findByUsername(username);
+    if (user==null) {
+        throw new UsernameNotFoundException("Username: "+username+" not found on repository ");
+    }
+    return new CustomPrincipal(user);
+}
+```
+
+Since we configured **`CustomUserDetailsService`** class with the ***`@Service`*** annotation, the spring application will automatically detect and create it during component-scan. Thus we do not need to add any further configuration.
+
+As you can see from the code above, we also need a `CustomPrincipal` class which implements `UserDetails` interface to convert user data to a format which enables security measures to be conducted.
+
+## Interacting with Database
+
+Besides, we also created `User` entity class and `UserRepository` interface to store and retrieve user data from database. `UserRepository` has just one custom method to enable finding users with name as depicted below.
+
+```java
+public interface UserRepository extends JpaRepository<User, Long> {
+    User findByUsername(String username);
+}
+
+```
+
+## Testing
 
 While testing the db connection, we used the `UserRepository` and tested db with following methods against the two records entered during db-setup.
 
@@ -77,3 +107,5 @@ public void whenFindByNameInvalid_thenNoMatch() {
   assertThat(this.userRepository.findByUsername("invalid")).isNull();
 }
 ```
+
+Web security tests are done as previous examples.
