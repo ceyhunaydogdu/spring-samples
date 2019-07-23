@@ -73,17 +73,6 @@ Since we configured **`CustomUserDetailsService`** class with the ***`@Service`*
 
 As you can see from the code above, we also need a `CustomPrincipal` class which implements `UserDetails` interface to convert user data to a format which enables security measures to be conducted.
 
-## Interacting with Database
-
-Besides, we also created `User` entity class and `UserRepository` interface to store and retrieve user data from database. `UserRepository` has just one custom method to enable finding users with name as depicted below.
-
-```java
-public interface UserRepository extends JpaRepository<User, Long> {
-    User findByUsername(String username);
-}
-
-```
-
 ## Testing
 
 While testing the db connection, we used the `UserRepository` and tested db with following methods against the two records entered during db-setup.
