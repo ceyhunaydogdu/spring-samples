@@ -8,3 +8,7 @@ This example illustrates how to build Spring Boot Secure Web Application with [O
     <artifactId>spring-boot-starter-oauth2-client</artifactId>
 </dependency>
 ```
+
+## Setting up OAuth2 Client Registration with Google
+
+First step for setup, [Google API Console](https://console.developers.google.com/).
