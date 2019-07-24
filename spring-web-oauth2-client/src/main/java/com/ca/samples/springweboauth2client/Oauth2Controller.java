@@ -17,7 +17,7 @@ public class Oauth2Controller implements WebMvcConfigurer {
     @GetMapping(value = "/")
     public String home(Model model, @RegisteredOAuth2AuthorizedClient OAuth2AuthorizedClient client,
             @AuthenticationPrincipal OAuth2User user) {
-        model.addAttribute("username", user.getName());
+        model.addAttribute("userName", user.getAttributes().get("name"));
         model.addAttribute("clientName", client.getClientRegistration().getClientName());
         model.addAttribute("userAttributes", user.getAttributes());
         return "home";
