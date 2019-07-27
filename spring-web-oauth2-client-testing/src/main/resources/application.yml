@@ -1,0 +1,14 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: your-client-id-obtained-from-google-api-console
+            client-secret: your-client-secret-obtained-from-google-api-console
+          github:
+            client-id: your-client-id-obtained-from-github
+            client-secret: your-client-secret-obtained-from-github
+  thymeleaf:
+    cache: false
+debug: true

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+    <title th:text="${title}">Home</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+        integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+        <a href="#" class="navbar-brand"><i class="fas fa-user"></i></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-333">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent-333">
+
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="https://getbootstrap.com/">Bootstrap</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/" th:href="@{/}">Home</a>
+                </li>
+
+            </ul>
+            <ul class="navbar-nav ml-auto nav-flex-icons">
+
+                <li class="nav-item">
+                    <span class="navbar-text" th:text="${' '+userName}"></span>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="/login?logout" th:href="@{/login?logout}">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div style="float: right" th:fragment="logout" sec:authorize="isAuthenticated()">
+            <div style="float:left">
+                <span style="font-weight:bold">User: </span><span sec:authentication="name"
+                    th:text="${userName}"></span>
+            </div>
+        </div>
+        <h3>OAuth 2.0 Login with Spring Security</h3>
+        <div>
+            You are successfully logged in <span style="font-weight:bold" th:text="${userName}"></span>
+            via the OAuth 2.0 Client <span style="font-weight:bold" th:text="${clientName}"></span>
+        </div>
+        <div>&nbsp;</div>
+        <div>
+            <span style="font-weight:bold">User Attributes:</span>
+            <ul>
+                <li th:each="userAttribute : ${userAttributes}">
+                    <span style="font-weight:bold" th:text="${userAttribute.key}"></span>: <span
+                        th:text="${userAttribute.value}"></span>
+                </li>
+            </ul>
+        </div>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="btn btn-primary mb-2">Logout</button>
+        </form>
+    </div>
+</body>
+
+</html>
