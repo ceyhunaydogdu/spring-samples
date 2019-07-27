@@ -7,6 +7,10 @@ This example illustrates how to build Spring Boot Secure Web Application with [O
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-oauth2-client</artifactId>
 </dependency>
+<dependency>
+  <groupId>net.sourceforge.htmlunit</groupId>
+  <artifactId>htmlunit</artifactId>
+</dependency>
 ```
 
 ## Setting up OAuth2 Client Registration with Google and GitHub
