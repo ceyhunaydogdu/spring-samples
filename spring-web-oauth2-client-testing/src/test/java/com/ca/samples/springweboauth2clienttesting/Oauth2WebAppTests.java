@@ -192,10 +192,10 @@ public class Oauth2WebAppTests {
 		String redirectUri=URLDecoder.decode(params.get(OAuth2ParameterNames.REDIRECT_URI), "UTF-8");
 		
 		String validAuthorizationResponseUri=UriComponentsBuilder
-												.fromHttpUrl(redirectUri)
-												.queryParam(OAuth2ParameterNames.CODE, code)
-												.queryParam(OAuth2ParameterNames.STATE, state)
-												.build().encode().toUriString();
+				.fromHttpUrl(redirectUri)
+				.queryParam(OAuth2ParameterNames.CODE, code)
+				.queryParam(OAuth2ParameterNames.STATE, state)
+				.build().encode().toUriString();
 				
 		HtmlPage homePage = this.webClient.getPage(new URL(validAuthorizationResponseUri));
 		assertThat(homePage.getTitleText()).isEqualToIgnoringWhitespace("Home");
@@ -217,10 +217,10 @@ public class Oauth2WebAppTests {
 		String redirectUri=REDIRECTION_BASE_URL+"/"+clientReg.getRegistrationId();
 		
 		String invalidAuthorizationResponseUri=UriComponentsBuilder
-												.fromHttpUrl(redirectUri)
-												.queryParam(OAuth2ParameterNames.CODE, code)
-												.queryParam(OAuth2ParameterNames.STATE, state)
-												.build().encode().toUriString();
+				.fromHttpUrl(redirectUri)
+				.queryParam(OAuth2ParameterNames.CODE, code)
+				.queryParam(OAuth2ParameterNames.STATE, state)
+				.build().encode().toUriString();
 
 		this.webClient.getCookieManager().clearCookies();
 		page = this.webClient.getPage(new URL(invalidAuthorizationResponseUri));
