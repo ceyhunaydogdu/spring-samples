@@ -12,3 +12,20 @@ This example illustrates how to build Spring Boot Secure Web Application with [O
     <artifactId>htmlunit</artifactId>
 </dependency>
 ```
+
+In order to test this web application, we need to add custom test configuration classes. We added `WebSecurityTestConfig` and `TestConfig` classes embedded in `Oauth2WebAppTests` class. Then we configured mock `tokenEndPoint` and `userInfoEndPoint` for login as below.
+
+```java
+@Override
+protected void configure(HttpSecurity http) throws Exception {
+    http.authorizeRequests()
+            .anyRequest().authenticated()
+            .and()
+        .oauth2Login()
+            .tokenEndpoint()
+                .accessTokenResponseClient(this.mockAccessTokenResponseClient())
+                .and()
+            .userInfoEndpoint().userService(this.mockUserService());
+}
+```
+With this setup, we can test the web app with OAuth2 framework.
