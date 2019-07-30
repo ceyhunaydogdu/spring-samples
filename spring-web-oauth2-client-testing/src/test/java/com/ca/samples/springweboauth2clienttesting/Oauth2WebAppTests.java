@@ -7,11 +7,13 @@ import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.MOVED_PERMANENTLY;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -38,6 +40,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer.JwtConfigurer;
+import org.springframework.security.config.web.server.ServerHttpSecurity.OAuth2ResourceServerSpec.JwtSpec;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
@@ -56,9 +60,13 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 // import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 
@@ -205,6 +213,35 @@ public class Oauth2WebAppTests {
 	}
 
 	@Test
+	public void whenValidAuthorizationResponseFromGoogle_thenDisplayHomePage()
+			throws FailingHttpStatusCodeException, MalformedURLException, IOException {
+
+		HtmlPage page = this.webClient.getPage("/");
+		ClientRegistration clientReg = this.clientRepo.findByRegistrationId("google");
+		HtmlAnchor clientAnchorElement = this.getClientAnchorElement(page, clientReg);
+		assertThat(clientAnchorElement).isNotNull();
+
+		WebResponse response = this.followLinkAndGetResponseBeforeRedirected(clientAnchorElement);
+		UriComponents uriComponents = UriComponentsBuilder.fromUri(URI.create(response.getResponseHeaderValue("Location"))).build();
+		Map<String, String> params = uriComponents.getQueryParams().toSingleValueMap();
+		String code="fake-auth-code";
+		String state=URLDecoder.decode(params.get(OAuth2ParameterNames.STATE), "UTF-8");
+		String redirectUri=URLDecoder.decode(params.get(OAuth2ParameterNames.REDIRECT_URI), "UTF-8");
+		
+		String validAuthorizationResponseUri=UriComponentsBuilder
+				.fromHttpUrl(redirectUri)
+				.queryParam(OAuth2ParameterNames.CODE, code)
+				.queryParam(OAuth2ParameterNames.STATE, state)
+				.build().encode().toUriString();
+				
+		HtmlPage homePage = this.webClient.getPage(new URL(validAuthorizationResponseUri));
+		assertThat(homePage.getTitleText()).isEqualToIgnoringWhitespace("Home");
+		assertThat(homePage.getBody().asText()).contains("OAuth 2.0 Login with Spring Security");
+		assertThat(homePage.getBody().asText()).contains("email: casample@gmail.com");
+		
+	}
+
+	@Test
 	public void whenInvalidAuthorizationResponse_thenDisplayLoginPageWithError()
 			throws FailingHttpStatusCodeException, MalformedURLException, IOException {
 		HtmlPage page = this.webClient.getPage("/");
@@ -261,10 +298,18 @@ public class Oauth2WebAppTests {
 			return userService;
 		}
 
-		private OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> mockAccessTokenResponseClient() {
+		private OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> mockAccessTokenResponseClient() throws UnsupportedEncodingException {
 			Map<String, Object> additionalParameters=new HashMap<>();
+			String token = Jwts.builder()
+				.setSubject("121234")
+				.setIssuedAt(new Date())
+				.setExpiration(new Date())
+				.signWith(SignatureAlgorithm.RS256, "secret".getBytes("UTF-8"))
+				.compact();
+			additionalParameters.put("id_token", token);
 			OAuth2AccessTokenResponse accessTokenResponse = OAuth2AccessTokenResponse.withToken("fake-access-token-123")
 				.tokenType(OAuth2AccessToken.TokenType.BEARER)
+				.additionalParameters(additionalParameters)
 				.expiresIn(60*1000)
 				.build();
 			OAuth2AccessTokenResponseClient accessTokenResponseClient = mock(OAuth2AccessTokenResponseClient.class);
