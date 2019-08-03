@@ -13,7 +13,7 @@ import org.springframework.data.rest.core.annotation.RestResource;
 @RepositoryRestResource
 interface MessageRepo extends JpaRepository<Message, Long>{
     @RestResource(path = "by-message")
-    Collection<Message> findByMessage(@Param("message") String message);
+    Collection<Message> findByMessageContaining(@Param("mes") String m);
     
 
 }
