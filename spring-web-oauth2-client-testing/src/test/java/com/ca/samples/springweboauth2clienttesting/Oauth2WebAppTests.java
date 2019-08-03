@@ -2,9 +2,7 @@ package com.ca.samples.springweboauth2clienttesting;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.MOVED_PERMANENTLY;
 
@@ -14,11 +12,9 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.security.Key;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -36,7 +32,6 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringBootConfiguration;
@@ -48,13 +43,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer.JwtConfigurer;
-import org.springframework.security.config.web.server.ServerHttpSecurity.OAuth2ResourceServerSpec.JwtSpec;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
@@ -62,17 +53,13 @@ import org.springframework.security.oauth2.client.authentication.OAuth2LoginAuth
 import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 import org.springframework.security.oauth2.client.oidc.authentication.OidcAuthorizationCodeAuthenticationProvider;
-import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.client.web.AuthenticatedPrincipalOAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
-import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
-import org.springframework.security.oauth2.core.OAuth2TokenValidator;
-import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AccessTokenResponse;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationResponseType;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
@@ -85,16 +72,9 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoderJwkSupport;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-
-import org.springframework.security.oauth2.core.endpoint.OAuth2AccessTokenResponse;
 
 // import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 
@@ -337,7 +317,7 @@ public class Oauth2WebAppTests {
 		protected void configure(HttpSecurity http) throws Exception {
 			http.authorizeRequests().anyRequest().authenticated().and().oauth2Login().tokenEndpoint()
 					.accessTokenResponseClient(this.mockAccessTokenResponseClient()).and().userInfoEndpoint()
-					.oidcUserService(this.mockOidcUserService())
+					// .oidcUserService(this.mockOidcUserService())
 					.userService(this.mockUserService());
 
 		}
@@ -349,30 +329,30 @@ public class Oauth2WebAppTests {
 
 		
 		
-		private OidcAuthorizationCodeAuthenticationProvider mockAuthenticationProvider()
-		throws UnsupportedEncodingException {
+		// private OidcAuthorizationCodeAuthenticationProvider mockAuthenticationProvider()
+		// throws UnsupportedEncodingException {
 			
-			OidcAuthorizationCodeAuthenticationProvider authenticationProvider = mock(OidcAuthorizationCodeAuthenticationProvider.class);
-			System.out.println("bul: mockAutonton");
-			OidcUser user = this.mockOidcUserService().loadUser(null);
-			Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
+		// 	OidcAuthorizationCodeAuthenticationProvider authenticationProvider = mock(OidcAuthorizationCodeAuthenticationProvider.class);
+		// 	System.out.println("bul: mockAutonton");
+		// 	OidcUser user = this.mockOidcUserService().loadUser(null);
+		// 	Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
 			
-			when(authenticationProvider.authenticate(any()))
-			.thenAnswer((Answer<OAuth2LoginAuthenticationToken>) invocation -> {
-				OAuth2LoginAuthenticationToken authenticationToken=invocation.getArgument(0);
-				System.out.println("bul: "+authenticationToken.getClientRegistration().getRegistrationId());
-				return new OAuth2LoginAuthenticationToken(
-					authenticationToken.getClientRegistration(),
-					authenticationToken.getAuthorizationExchange(),
-					user,
-					authorities,
-					this.mockAccessTokenResponseClient().getTokenResponse(null).getAccessToken(),
-					this.mockAccessTokenResponseClient().getTokenResponse(null).getRefreshToken());
-				});
+		// 	when(authenticationProvider.authenticate(any()))
+		// 	.thenAnswer((Answer<OAuth2LoginAuthenticationToken>) invocation -> {
+		// 		OAuth2LoginAuthenticationToken authenticationToken=invocation.getArgument(0);
+		// 		System.out.println("bul: "+authenticationToken.getClientRegistration().getRegistrationId());
+		// 		return new OAuth2LoginAuthenticationToken(
+		// 			authenticationToken.getClientRegistration(),
+		// 			authenticationToken.getAuthorizationExchange(),
+		// 			user,
+		// 			authorities,
+		// 			this.mockAccessTokenResponseClient().getTokenResponse(null).getAccessToken(),
+		// 			this.mockAccessTokenResponseClient().getTokenResponse(null).getRefreshToken());
+		// 		});
 				
 				
-				return authenticationProvider;
-			}
+		// 		return authenticationProvider;
+		// 	}
 			
 			private OAuth2UserService<OAuth2UserRequest, OAuth2User> mockUserService() {
 				Map<String, Object> attributes = new HashMap<>();
@@ -394,35 +374,35 @@ public class Oauth2WebAppTests {
 			return userService;
 			}
 			
-			private OAuth2UserService<OidcUserRequest, OidcUser> mockOidcUserService() {
-				Map<String, Object> attributes = new HashMap<>();
-				attributes.put("id", "ca");
-				attributes.put("first-name", "Ceyhun");
-			attributes.put("last-name", "Aydoğdu");
-			attributes.put("email", "casample@gmail.com");
+		// 	private OAuth2UserService<OidcUserRequest, OidcUser> mockOidcUserService() {
+		// 		Map<String, Object> attributes = new HashMap<>();
+		// 		attributes.put("id", "ca");
+		// 		attributes.put("first-name", "Ceyhun");
+		// 	attributes.put("last-name", "Aydoğdu");
+		// 	attributes.put("email", "casample@gmail.com");
 
-			OAuth2UserAuthority oAuth2UserAuthority = new OAuth2UserAuthority(attributes);
-			Collection<GrantedAuthority> authorities = new HashSet<>();
-			authorities.add(oAuth2UserAuthority);
+		// 	OAuth2UserAuthority oAuth2UserAuthority = new OAuth2UserAuthority(attributes);
+		// 	Collection<GrantedAuthority> authorities = new HashSet<>();
+		// 	authorities.add(oAuth2UserAuthority);
 
-			Map<String, Object> claims = new HashMap<>();
-			claims.put(IdTokenClaimNames.ISS, "https://mock.provider.com");
-			claims.put(IdTokenClaimNames.SUB, "ceyhun");
-			claims.put(IdTokenClaimNames.AUD, Arrays.asList("client1", "client2"));
-			claims.put(IdTokenClaimNames.AZP, "client1");
-			Instant issuedAt = Instant.now();
-			Instant expiresAt = Instant.from(issuedAt).plusSeconds(3600);
-			Map<String, Object> headers = new HashMap<>();
-			headers.put("alg", "RS256");
-			Jwt jwt = new Jwt("id-token", issuedAt, expiresAt, headers, claims);
-			OidcIdToken oidcToken=new OidcIdToken(jwt.getTokenValue(), jwt.getIssuedAt(), jwt.getExpiresAt(), jwt.getClaims());;
-			OidcUser user = new DefaultOidcUser(authorities, oidcToken);
+		// 	Map<String, Object> claims = new HashMap<>();
+		// 	claims.put(IdTokenClaimNames.ISS, "https://mock.provider.com");
+		// 	claims.put(IdTokenClaimNames.SUB, "ceyhun");
+		// 	claims.put(IdTokenClaimNames.AUD, Arrays.asList("client1", "client2"));
+		// 	claims.put(IdTokenClaimNames.AZP, "client1");
+		// 	Instant issuedAt = Instant.now();
+		// 	Instant expiresAt = Instant.from(issuedAt).plusSeconds(3600);
+		// 	Map<String, Object> headers = new HashMap<>();
+		// 	headers.put("alg", "RS256");
+		// 	Jwt jwt = new Jwt("id-token", issuedAt, expiresAt, headers, claims);
+		// 	OidcIdToken oidcToken=new OidcIdToken(jwt.getTokenValue(), jwt.getIssuedAt(), jwt.getExpiresAt(), jwt.getClaims());;
+		// 	OidcUser user = new DefaultOidcUser(authorities, oidcToken);
 
-			OAuth2UserService<OidcUserRequest, OidcUser> userService = mock(OAuth2UserService.class);
-			when(userService.loadUser(any())).thenReturn(user);
+		// 	OAuth2UserService<OidcUserRequest, OidcUser> userService = mock(OAuth2UserService.class);
+		// 	when(userService.loadUser(any())).thenReturn(user);
 
-			return userService;
-		}
+		// 	return userService;
+		// }
 
 		private OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> mockAccessTokenResponseClient()
 				throws UnsupportedEncodingException {
