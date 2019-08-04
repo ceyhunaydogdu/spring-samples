@@ -149,14 +149,6 @@ public class RestAppTests {
 				Void.class);
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
 	}
-	
-	@Test
-	public void whenDeleteAllMessageNotExported_then() {
-		// Delete id=3 message="Never undeRestimate"
-		ResponseEntity<Void> response = testRestTemplate.exchange(base + "/3", HttpMethod.DELETE, null,
-				Void.class);
-		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
-	}
 
 	@Test
 	public void whenSearchCustomByMessage_thenSuccessAndFound() {
