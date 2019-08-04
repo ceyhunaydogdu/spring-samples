@@ -17,7 +17,7 @@ public class RestApp {
 	@Bean
 	CommandLineRunner cLineRunner(MessageRepo messageRepo){
 		return args -> {
-			Stream.of("Hello resters!","Rest in Peace", "Never underestimate", "Rest of the world","Who is nest?")
+			Stream.of("Hello Resters!","Rest in Peace", "Never undeRestimate", "Rest of the world","Who is nest by the way?")
 				.forEach(m -> messageRepo.save(new Message(m)));
 
 		};
