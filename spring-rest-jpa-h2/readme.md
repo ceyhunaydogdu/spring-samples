@@ -171,3 +171,26 @@ When we enter [http://localhost:8080/messages/search/by-message?mes=nest](http:/
 }
 
 ```
+
+## Testing
+
+We can test the REST Application with http GET, POST, PUT and DELETE request using `TestRestTemplate`, however to test with http PACH request we need to tune `TestRestTemplate` as follows.
+
+```java
+//Tuning testRestTemplate to send PATCH request.
+patchRestTemplate=testRestTemplate.getRestTemplate();
+HttpClient hClient = HttpClientBuilder.create().build();
+patchRestTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(hClient));
+```
+
+We also need to add following dependency to `pom.xml` file, to enable `TestRestTemplate` to send PATCH requests accordingly.
+
+```maven
+<dependency>
+  <groupId>org.apache.httpcomponents</groupId>
+  <artifactId>httpclient</artifactId>
+  <version>4.5.9</version>
+  <scope>test</scope>
+</dependency>
+```
+

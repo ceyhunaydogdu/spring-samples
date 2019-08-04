@@ -14,6 +14,4 @@ import org.springframework.data.rest.core.annotation.RestResource;
 interface MessageRepo extends JpaRepository<Message, Long>{
     @RestResource(path = "by-message")
     Collection<Message> findByMessageContainingIgnoringCase(@Param("m") String m);
-    
-
 }
