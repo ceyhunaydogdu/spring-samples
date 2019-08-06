@@ -146,7 +146,7 @@ If we go to [http://localhost:8080/messages](http://localhost:8080/messages) res
 
 ```
 
-When we enter [http://localhost:8080/messages/search/by-message?mes=nest](http://localhost:8080/messages/search/by-message?mes=nest) for custom search messages containing "nest" keyword, output would be as below.
+When we enter [http://localhost:8080/messages/search/by-message?m=nest](http://localhost:8080/messages/search/by-message?mes=nest) for custom search (messages containing "nest" keyword), output would be as below.
 
 ```json
 {
@@ -174,16 +174,7 @@ When we enter [http://localhost:8080/messages/search/by-message?mes=nest](http:/
 
 ## Testing
 
-We can test the REST Application with http GET, POST, PUT and DELETE request using `TestRestTemplate`, however to test with http PACH request we need to tune `TestRestTemplate` as follows.
-
-```java
-//Tuning testRestTemplate to send PATCH request.
-patchRestTemplate=testRestTemplate.getRestTemplate();
-HttpClient hClient = HttpClientBuilder.create().build();
-patchRestTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(hClient));
-```
-
-We also need to add following dependency to `pom.xml` file, to enable `TestRestTemplate` to send PATCH requests accordingly.
+We can test the REST Application with http GET, POST, PUT and DELETE request using `TestRestTemplate`. However, Spring `TestRestTemplate` does not support PATCH operation out of box, so we need to add following dependency to `pom.xml` file to enable PATCH operations. 
 
 ```maven
 <dependency>
@@ -194,3 +185,11 @@ We also need to add following dependency to `pom.xml` file, to enable `TestRestT
 </dependency>
 ```
 
+After adding library, we need to tune `TestRestTemplate` as follows to enable `TestRestTemplate` to send PATCH requests accordingly.
+
+```java
+//Tuning testRestTemplate to send PATCH request.
+patchRestTemplate=testRestTemplate.getRestTemplate();
+HttpClient hClient = HttpClientBuilder.create().build();
+patchRestTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(hClient));
+```
