@@ -174,7 +174,7 @@ When we enter [http://localhost:8080/messages/search/by-message?m=nest](http://l
 
 ## Testing
 
-We can test the REST Application with http GET, POST, PUT and DELETE request using `TestRestTemplate`. However, Spring `TestRestTemplate` does not support PATCH operation out of box, so we need to add following dependency to `pom.xml` file to enable PATCH operations. 
+We can test the REST Application with http GET, POST, PUT and DELETE request using `TestRestTemplate`. However, Spring `TestRestTemplate` does not support PATCH operation out of box, so we need to add following dependency to `pom.xml` file to enable PATCH operations.
 
 ```maven
 <dependency>
