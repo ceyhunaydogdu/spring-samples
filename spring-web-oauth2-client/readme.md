@@ -21,7 +21,9 @@ For Google as `the oauth-provider`, we need to go [Google API Console](https://c
 
 For GitHub as `the oauth-provider`, we need to go [GitHub Application](https://github.com/settings/applications/new) page to register our app as client. You can follow [GitHub's Authorizing OAuth Apps Guide](https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/#web-application-flow) to get through OAuth2 client registration process and obtain `client-id` and `client-secret` for the application.Redirect-URI for GitHub would be `http://localhost:8080/login/oauth2/code/github`.
 
-Upon successfully completion of client registrations, we can add the following properties to the `application.yml` to tell the web app that we are going to use Google and GitHub as an `the oauth-provider` and rest is upon Spring.
+For Okta as `the oauth-provider`, we need to go ***Okta Application*** page to register our app as client. You can follow [Okta's Sign users in to your Web Application Guide](https://developer.okta.com/docs/guides/sign-into-web-app/springboot/create-okta-application/) to get through OAuth2 client registration process and obtain `client-id` and `client-secret` for the application. Redirect-URI for Okta would be `http://localhost:8080/login/oauth2/code/okta`.
+
+Upon successfully completion of client registrations, we can add the following properties to the `application.yml` to tell the web app that we are going to use Google, GitHub and Okta as an `the oauth-provider` and rest is upon Spring.
 
 ```yaml
 spring:
@@ -35,4 +37,14 @@ spring:
           github:
             client-id: your-client-id-obtained-from-github
             client-secret: your-client-secret-obtained-from-github
+          okta:
+            client-id: your-client-id
+            client-secret: your-client-secret
+        provider:
+          okta:
+            authorization-uri: https://[your-domain].okta.com/oauth2/v1/authorize
+            token-uri: https://[your-domain].okta.com/oauth2/v1/token
+            user-info-uri: https://[your-domain].okta.com/oauth2/v1/userinfo
+            user-name-attribute: sub
+            jwk-set-uri: https://[your-domain].okta.com/oauth2/v1/keys
 ```
