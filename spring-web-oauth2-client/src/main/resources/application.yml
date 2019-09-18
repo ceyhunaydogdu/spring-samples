@@ -4,14 +4,14 @@ spring:
       client:
         registration:
           google:
-            client-id: 336980058256-msnmq7lnjccogfqq973fsd6rtaam8unq.apps.googleusercontent.com
-            client-secret: ThcAH38YPILC8vsT_bi9ylYE
+            client-id: your-client-id
+            client-secret: your-client-secret
           github:
-            client-id: 86bf15eaf22ff38dc199
-            client-secret: cbd0e2d2e4acd2e95cbe2154b4e767852df073e7
+            client-id: your-client-id
+            client-secret: your-client-secret
           okta:
-            client-id: 0oa1d5wdxwi9jdE4I357
-            client-secret: faONiOKZdSFltymYcV0ekjqhpXGVv7-Hbcl4c1GX
+            client-id: your-client-id
+            client-secret: your-client-secret
         provider:
           okta:
             authorization-uri: https://dev-169923.okta.com/oauth2/v1/authorize
