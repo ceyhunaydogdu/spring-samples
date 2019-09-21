@@ -1,6 +1,6 @@
 # Spring Boot Secure Web Application with OAuth2 Login
 
-This example illustrates how to build Spring Boot Secure Web Application with [OAuth2.0 Authorization Framework](https://tools.ietf.org/html/rfc6749#section-4.1) using the existing account at an **OAuth 2.0 Provider** *(e.g. Google and GitHub)*. In order to use **OAuth2** authentication, we need to add following dependencies to `pom.xml` file.
+This example illustrates how to build Spring Boot Secure Web Application with [OAuth2.0 Authorization Framework](https://tools.ietf.org/html/rfc6749#section-4.1) using the existing account at an **OAuth 2.0 Provider** *(e.g. Google, GitHub and Okta)*. In order to use **OAuth2** authentication, we need to add following dependencies to `pom.xml` file.
 
 ```maven
 <dependency>
@@ -13,7 +13,7 @@ This example illustrates how to build Spring Boot Secure Web Application with [O
 </dependency>
 ```
 
-## Setting up OAuth2 Client Registration with Google and GitHub
+## Setting up OAuth2 Client Registration with Google, GitHub and Okta
 
 First step for meeting **OAuth2** framework is to go through client registration process and get a valid `client-id` and `client-secret` from `the oauth-provider`. During registration, you need to specify redirect URI as following `{baseUrl}/login/oauth2/code/{registrationId}` template.
 
@@ -38,8 +38,8 @@ spring:
             client-id: your-client-id-obtained-from-github
             client-secret: your-client-secret-obtained-from-github
           okta:
-            client-id: your-client-id
-            client-secret: your-client-secret
+            client-id: your-client-id-from-okta
+            client-secret: your-client-secret-from-okta
         provider:
           okta:
             authorization-uri: https://[your-domain].okta.com/oauth2/v1/authorize
