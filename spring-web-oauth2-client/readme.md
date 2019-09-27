@@ -17,11 +17,11 @@ This example illustrates how to build Spring Boot Secure Web Application with [O
 
 First step for meeting **OAuth2** framework is to go through client registration process and get a valid `client-id` and `client-secret` from `the oauth-provider`. During registration, you need to specify redirect URI as following `{baseUrl}/login/oauth2/code/{registrationId}` template.
 
-For Google as `the oauth-provider`, we need to go [Google API Console](https://console.developers.google.com/) to register our app as client. If you are new starter, you can follow [Google's OpendID Connect Guide](https://developers.google.com/identity/protocols/OpenIDConnect) to get through OAuth2 client registration process and obtain `client-id` and `client-secret` for the application. Redirect-URI for Google would be `http://localhost:8080/login/oauth2/code/google`.
+For Google as `the oauth-provider`, we need to go to [Google API Console](https://console.developers.google.com/) to register our app as client. If you are new starter, you can follow [Google's OpendID Connect Guide](https://developers.google.com/identity/protocols/OpenIDConnect) to get through OAuth2 client registration process and obtain `client-id` and `client-secret` for the application. Redirect-URI for Google would be `http://localhost:8080/login/oauth2/code/google`.
 
-For GitHub as `the oauth-provider`, we need to go [GitHub Application](https://github.com/settings/applications/new) page to register our app as client. You can follow [GitHub's Authorizing OAuth Apps Guide](https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/#web-application-flow) to get through OAuth2 client registration process and obtain `client-id` and `client-secret` for the application.Redirect-URI for GitHub would be `http://localhost:8080/login/oauth2/code/github`.
+For GitHub as `the oauth-provider`, we need to go to [GitHub Application](https://github.com/settings/applications/new) page to register our app as client. You can follow [GitHub's Authorizing OAuth Apps Guide](https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/#web-application-flow) to get through OAuth2 client registration process and obtain `client-id` and `client-secret` for the application.Redirect-URI for GitHub would be `http://localhost:8080/login/oauth2/code/github`.
 
-For Okta as `the oauth-provider`, we need to go ***Okta Application*** page to register our app as client. You can follow [Okta's Sign users in to your Web Application Guide](https://developer.okta.com/docs/guides/sign-into-web-app/springboot/create-okta-application/) to get through OAuth2 client registration process and obtain `client-id` and `client-secret` for the application. Redirect-URI for Okta would be `http://localhost:8080/login/oauth2/code/okta`.
+For Okta as `the oauth-provider`, we need to go to ***Okta Application*** page to register our app as client. You can follow [Okta's Sign users in to your Web Application Guide](https://developer.okta.com/docs/guides/sign-into-web-app/springboot/create-okta-application/) to get through OAuth2 client registration process and obtain `client-id` and `client-secret` for the application. Redirect-URI for Okta would be `http://localhost:8080/login/oauth2/code/okta`. Since Okta gives subdomains called tennants, we need additional properties to define our subdomain as auth-provider in `application.yml` as shown below.
 
 Upon successfully completion of client registrations, we can add the following properties to the `application.yml` to tell the web app that we are going to use Google, GitHub and Okta as an `the oauth-provider` and rest is upon Spring.
 
@@ -38,8 +38,8 @@ spring:
             client-id: your-client-id-obtained-from-github
             client-secret: your-client-secret-obtained-from-github
           okta:
-            client-id: your-client-id-from-okta
-            client-secret: your-client-secret-from-okta
+            client-id: your-client-id-obtained-from-okta
+            client-secret: your-client-secret-obtained-from-okta
         provider:
           okta:
             authorization-uri: https://[your-domain].okta.com/oauth2/v1/authorize
