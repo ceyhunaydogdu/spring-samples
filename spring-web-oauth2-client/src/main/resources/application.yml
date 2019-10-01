@@ -4,14 +4,14 @@ spring:
       client:
         registration:
           google:
-            client-id: your-client-id
-            client-secret: your-client-secret
+            client-id: your-client-id-from-google
+            client-secret: your-client-secret-from-google
           github:
-            client-id: your-client-id
-            client-secret: your-client-secret
+            client-id: your-client-id-from-github
+            client-secret: your-client-secret-from-github
           okta:
-            client-id: your-client-id
-            client-secret: your-client-secret
+            client-id: your-client-id-from-okta
+            client-secret: your-client-secret-from-okta
         provider:
           okta:
             authorization-uri: https://dev-169923.okta.com/oauth2/v1/authorize
