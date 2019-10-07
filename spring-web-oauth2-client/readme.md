@@ -1,6 +1,6 @@
 # Spring Boot Secure Web Application with OAuth2 Login
 
-This example illustrates how to build Spring Boot Secure Web Application with [OAuth2.0 Authorization Framework](https://tools.ietf.org/html/rfc6749#section-4.1) using the existing account at an **OAuth 2.0 Provider** *(e.g. Google, GitHub and Okta)*. In order to use **OAuth2** authentication, we need to add following dependencies to `pom.xml` file.
+This example illustrates how to build Spring Boot Secure Web Application with [OAuth2.0 Authorization Frameworks](https://tools.ietf.org/html/rfc6749#section-4.1) using the existing account at an **OAuth 2.0 Provider** *(e.g. Google, GitHub and Okta)*. In order to use **OAuth2** authentication, we need to add following dependencies to `pom.xml` file.
 
 ```maven
 <dependency>
@@ -15,7 +15,7 @@ This example illustrates how to build Spring Boot Secure Web Application with [O
 
 ## Setting up OAuth2 Client Registration with Google, GitHub and Okta
 
-First step for meeting **OAuth2** framework is to go through client registration process and get a valid `client-id` and `client-secret` from `the oauth-provider`. During registration, you need to specify redirect URI as following `{baseUrl}/login/oauth2/code/{registrationId}` template.
+First step for meeting **OAuth2** framework is to go through client registration process and get a valid `client-id` and `client-secret` from `the oauth-provider`. During registration, you need to specify redirect URI by using `{baseUrl}/login/oauth2/code/{registrationId}` template. The `baseURL` would be the address of the web server, where `registrationId` is the name of the `the oauth-provider`.
 
 For Google as `the oauth-provider`, we need to go to [Google API Console](https://console.developers.google.com/) to register our app as client. If you are new starter, you can follow [Google's OpendID Connect Guide](https://developers.google.com/identity/protocols/OpenIDConnect) to get through OAuth2 client registration process and obtain `client-id` and `client-secret` for the application. Redirect-URI for Google would be `http://localhost:8080/login/oauth2/code/google`.
 
